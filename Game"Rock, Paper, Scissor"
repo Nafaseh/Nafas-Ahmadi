@@ -1,0 +1,55 @@
+# Rock, Paper, Scissors Game
+
+## Description
+# A simple game where the user plays Rock, Paper, Scissors against the computer.
+
+# Import necessary libraries
+import random
+
+# Define the choices
+choices = ["rock", "paper", "scissors"]
+
+def get_computer_choice():
+    """Randomly select a choice for the computer."""
+    return random.choice(choices)
+
+def get_user_choice():
+    """Prompt the user to input their choice."""
+    while True:
+        user_input = input("Enter your choice (rock, paper, scissors): ").strip().lower()
+        if user_input in choices:
+            return user_input
+        print("Invalid choice. Please try again.")
+
+def determine_winner(user, computer):
+    """Determine the winner based on the rules of the game."""
+    if user == computer:
+        return "It's a tie!"
+    elif (user == "rock" and computer == "scissors") or \
+         (user == "paper" and computer == "rock") or \
+         (user == "scissors" and computer == "paper"):
+        return "You win!"
+    else:
+        return "Computer wins!"
+
+def play_game():
+    """Main function to play the game."""
+    print("Welcome to Rock, Paper, Scissors!")
+    while True:
+        user_choice = get_user_choice()
+        computer_choice = get_computer_choice()
+
+        print(f"\nYou chose: {user_choice}")
+        print(f"Computer chose: {computer_choice}")
+
+        result = determine_winner(user_choice, computer_choice)
+        print(result)
+
+        play_again = input("\nDo you want to play again? (yes/no): ").strip().lower()
+        if play_again != "yes":
+            print("Thanks for playing! Goodbye!")
+            break
+
+# Run the game
+if __name__ == "__main__":
+    play_game()
