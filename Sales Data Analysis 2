@@ -1,0 +1,36 @@
+
+
+## Description
+# A data analysis project that processes sales data and generates valuable insights.
+
+def sales_data_analysis():
+    """Analyze sales data from a CSV file and generate insights."""
+    # Create a sample DataFrame (Replace this with data loading in practice)
+    data = {
+        'Product': ['A', 'B', 'C', 'A', 'B', 'C'],
+        'Month': ['January', 'January', 'January', 'February', 'February', 'February'],
+        'Revenue': [500, 700, 800, 600, 750, 900]
+    }
+    df = pd.DataFrame(data)
+
+    # Analyze total revenue per product
+    product_revenue = df.groupby('Product')['Revenue'].sum()
+    print("Total revenue per product:")
+    print(product_revenue)
+
+    # Visualize revenue per product
+    product_revenue.plot(kind='bar', title='Total Revenue per Product', xlabel='Product', ylabel='Revenue', color='skyblue')
+    plt.show()
+
+    # Analyze total revenue per month
+    monthly_revenue = df.groupby('Month')['Revenue'].sum()
+    print("\nTotal revenue per month:")
+    print(monthly_revenue)
+
+    # Visualize revenue per month
+    monthly_revenue.plot(kind='bar', title='Total Revenue per Month', xlabel='Month', ylabel='Revenue', color='orange')
+    plt.show()
+
+if __name__ == "__main__":
+    print("\n--- Sales Data Analysis ---")
+    sales_data_analysis()
