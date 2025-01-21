@@ -1,0 +1,87 @@
+# Project 1: Sales Data Analysis
+
+## Description
+# Analyze sales data to extract key performance metrics like total revenue, monthly trends, top-selling products, and customer segmentation.
+
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load sales data
+data = pd.read_csv('sales_data.csv')  # Replace with your actual dataset
+
+# Convert order_date to datetime format
+data['order_date'] = pd.to_datetime(data['order_date'])
+
+# Calculate monthly revenue
+data['month'] = data['order_date'].dt.to_period('M')
+monthly_revenue = data.groupby('month')['total_amount'].sum()
+
+# Plot monthly revenue
+plt.figure(figsize=(10, 5))
+monthly_revenue.plot(kind='bar', color='skyblue')
+plt.title('Monthly Revenue')
+plt.xlabel('Month')
+plt.ylabel('Revenue ($)')
+plt.show()
+
+# Top 5 products by revenue
+top_products = data.groupby('product_name')['total_amount'].sum().sort_values(ascending=False).head(5)
+print("Top 5 Products by Revenue:")
+print(top_products)
+
+# Export results to CSV
+monthly_revenue.to_csv('monthly_revenue.csv', header=True)
+top_products.to_csv('top_5_products.csv', header=True)
+
+
+# Project 2: Customer Churn Prediction
+
+## Description
+# Build a machine learning model to predict customer churn using a dataset with customer demographics and behavior.
+
+# Import necessary libraries
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+import seaborn as sns
+
+# Load the dataset
+data = pd.read_csv('customer_churn.csv')  # Replace with your actual dataset
+
+# Data preprocessing
+# Convert categorical variables to dummy variables
+data = pd.get_dummies(data, drop_first=True)
+
+# Separate features and target variable
+X = data.drop('Churn', axis=1)
+y = data['Churn']
+
+# Split the data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Train a Random Forest model
+model = RandomForestClassifier(random_state=42)
+model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+print("Classification Report:\n", classification_report(y_test, y_pred))
+
+# Plot confusion matrix
+plt.figure(figsize=(6, 4))
+sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, fmt='d', cmap='Blues')
+plt.title('Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.show()
+
+# Feature importance
+feature_importance = pd.Series(model.feature_importances_, index=X.columns).sort_values(ascending=False)
+print("Feature Importance:\n")
+print(feature_importance.head(10))
+
+# Export results
+feature_importance.to_csv('feature_importance.csv', header=True)
